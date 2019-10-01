@@ -38,9 +38,30 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    let morzeArray = expr.match( /[\d \*]{10}/g );
+    let message = '';
+    let morzeSymbol;
+
+    morzeArray.forEach( function( symbolCode, idx, srcArr ) {
+        if ( symbolCode === "**********" ) {
+            morzeSymbol = symbolCode.replace( /^\*{10}/, ' ' );
+            message += morzeSymbol;
+        }
+        else {
+            morzeSymbol = symbolCode.replace( /^0+/, '' );
+            let symArr = morzeSymbol.match( /\d{2}/g );
+            let symString = '';
+            for ( let letter of symArr ) {
+                symString += ( letter === '10' ) ? '.' : '-';
+            }
+            message += MORSE_TABLE[ symString ];
+        }
+    });
+    return message;
 }
 
 module.exports = {
     decode
 }
+
+
